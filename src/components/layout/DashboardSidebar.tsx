@@ -48,7 +48,7 @@ export default function DashboardSidebar({ user, accounts }: SidebarProps) {
   ];
 
   return (
-    <aside className="w-full md:w-[280px] bg-[#0f172a] border-b md:border-b-0 md:border-r border-white/10 flex flex-col md:h-screen md:sticky top-0">
+    <aside className="sidebar">
       {/* Logo */}
       <div style={{ padding: '24px 20px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <Link href="/" style={{ textDecoration: 'none', color: '#fff', fontSize: '1.5rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>
