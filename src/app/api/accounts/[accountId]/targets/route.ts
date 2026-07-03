@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma';
 
 export async function POST(
   req: Request,
-  { params }: { params: { accountId: string } }
+  { params }: { params: Promise<{ accountId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -14,7 +14,7 @@ export async function POST(
     }
 
     const userId = (session.user as any).id;
-    const accountId = params.accountId;
+    const accountId = (await params).accountId;
 
     const account = await prisma.xAccount.findFirst({
       where: { id: accountId, userId: userId }

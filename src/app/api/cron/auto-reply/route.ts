@@ -9,7 +9,7 @@ export async function GET(req: Request) {
     where: {
       isActive: true,
       autoReplyEnabled: true,
-      replyTemplate: { not: null, not: '' },
+      replyTemplate: { not: '' },
       apiKey: { not: null },
       apiSecret: { not: null },
       accessToken: { not: null },

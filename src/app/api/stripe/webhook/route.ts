@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_dummy', {
-  apiVersion: '2023-10-16',
+  apiVersion: '2026-06-24.dahlia',
 });
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || 'whsec_dummy';
@@ -12,7 +12,7 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || 'whsec_dummy';
 export async function POST(req: Request) {
   try {
     const body = await req.text();
-    const signature = headers().get('stripe-signature') as string;
+    const signature = (await headers()).get('stripe-signature') as string;
 
     let event: Stripe.Event;
 

@@ -34,7 +34,7 @@ export async function GET(req: Request) {
           
           const lastNormalDate = lastNormalLog ? new Date(lastNormalLog.createdAt) : new Date(0);
           const diffMinutesNormal = Math.floor((now.getTime() - lastNormalDate.getTime()) / (1000 * 60));
-          const targetIntervalNormal = Math.floor(Math.random() * (account.normalPostIntervalMax - account.normalPostIntervalMin + 1)) + account.normalPostIntervalMin;
+          const targetIntervalNormal = Math.floor(Math.random() * (account.normalPostInterval - account.normalPostInterval + 1)) + account.normalPostInterval;
 
           if (diffMinutesNormal >= targetIntervalNormal) {
             // Find an unposted normal post stock

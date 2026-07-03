@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma';
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { accountId: string, targetId: string } }
+  { params }: { params: Promise<{ accountId: string, targetId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -14,8 +14,8 @@ export async function DELETE(
     }
 
     const userId = (session.user as any).id;
-    const accountId = params.accountId;
-    const targetId = params.targetId;
+    const accountId = (await params).accountId;
+    const targetId = (await params).targetId;
 
     // Verify account ownership
     const account = await prisma.xAccount.findFirst({
