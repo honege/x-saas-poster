@@ -42,12 +42,12 @@ export default async function DashboardLayout({
   // Wait, `layout.tsx` doesn't get searchParams. We can just pass `accounts` and `user`.
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#0f172a' }}>
+    <div className="flex flex-col md:flex-row min-h-screen bg-[#0f172a]">
       <DashboardSidebar 
         user={user} 
         accounts={accounts} 
       />
-      <div style={{ flex: 1, height: '100vh', overflowY: 'auto', backgroundColor: '#0b1120' }}>
+      <div className="flex-1 h-screen overflow-y-auto bg-[#0b1120]">
         {children}
       </div>
     </div>

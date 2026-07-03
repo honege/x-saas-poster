@@ -6,13 +6,13 @@ export default function Home() {
       {/* 1. Hero Section */}
       <section className="hero-section">
 
-        <h1 className="hero-title" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}>
+        <h1 className="hero-title px-4" style={{ fontSize: 'clamp(1.8rem, 5vw, 4rem)' }}>
           X収益化を完全自動化する<br />
           最強の<span className="hero-highlight">自動運転システム</span>
         </h1>
         
         {/* 1. Proof of "最強" */}
-        <ul style={{ listStyle: 'none', padding: 0, marginTop: '24px', marginBottom: '32px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px', justifyContent: 'center', maxWidth: '800px', margin: '0 auto 32px' }}>
+        <ul style={{ listStyle: 'none', padding: '0 16px', marginTop: '24px', marginBottom: '32px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '12px', justifyContent: 'center', maxWidth: '800px', margin: '0 auto 32px' }}>
           <li className="glass-panel" style={{ padding: '8px 16px', borderRadius: '30px', fontSize: '1rem', fontWeight: 'bold', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '64px' }}>
             <span>✓ 30アカ一括管理</span>
             <span style={{ fontSize: '0.65rem', color: 'var(--accent)', marginTop: '2px', fontWeight: 'normal' }}>※マスタープラン時</span>
@@ -35,7 +35,7 @@ export default function Home() {
           </li>
         </ul>
 
-        <div className="flex gap-4" style={{ marginBottom: '40px' }}>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center px-4 w-full" style={{ marginBottom: '40px' }}>
           <Link href="/login" className="btn btn-primary" style={{ padding: '16px 40px', fontSize: '1.2rem', boxShadow: '0 0 20px rgba(16,185,129,0.4)' }}>
             今すぐ無料で始める
           </Link>
@@ -45,7 +45,7 @@ export default function Home() {
         </div>
 
         {/* 2. Video Placeholder */}
-        <div style={{ marginTop: '40px', width: '100%', maxWidth: '900px', aspectRatio: '16/9', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', borderRadius: '24px', border: '1px solid var(--border-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', boxShadow: '0 20px 40px rgba(0,0,0,0.4)' }}>
+        <div className="mx-4 sm:mx-auto" style={{ marginTop: '40px', width: 'auto', maxWidth: '900px', aspectRatio: '16/9', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', borderRadius: '24px', border: '1px solid var(--border-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', boxShadow: '0 20px 40px rgba(0,0,0,0.4)' }}>
           <div style={{ fontSize: '4rem', marginBottom: '16px', opacity: '0.8' }}>▶️</div>
           <p style={{ color: 'var(--text-main)', fontSize: '1.5rem', fontWeight: 'bold', lineHeight: '1.6', textAlign: 'center' }}>
             15秒で<br/>
