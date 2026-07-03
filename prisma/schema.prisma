@@ -1,0 +1,152 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id               String      @id @default(uuid())
+  name             String?
+  email            String?     @unique
+  password         String?
+  emailVerified    DateTime?
+  image            String?
+  stripeCustomerId String?     @unique
+  stripeSubscriptionId String? @unique
+  stripePriceId    String?
+  stripeCurrentPeriodEnd DateTime?
+  subscriptionTier String      @default("FREE") // FREE, LITE, STANDARD, PREMIUM, MASTER
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  accounts         Account[]
+  sessions         Session[]
+  xAccounts        XAccount[]
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model XAccount {
+  id               String      @id @default(uuid())
+  userId           String
+  user             User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  handle           String      // @username
+  apiKey           String?     
+  apiSecret        String?
+  accessToken      String?
+  accessSecret     String?
+  proxyUrl         String?     // For IP rotation
+  isActive         Boolean     @default(false)
+  postIntervalMin  Int         @default(60) // Auto post interval
+  postIntervalMax  Int         @default(120)
+
+  // Reply settings
+  autoReplyEnabled Boolean     @default(false)
+  replyThreshold   Int         @default(1000) // Impressions/Likes threshold for auto-reply
+  replyTemplate    String?     // Affiliate link template
+
+  // QRT Comment settings
+  qrtCommentMode   String      @default("AI") // "AI" or "RANDOM_STOCK"
+  customComments   CommentStock[]
+
+  // Safety & Limits
+  dailyApiLimit    Int         @default(45) // Safe limit to prevent 1500/mo API limit ban
+  dailyPostCount   Int         @default(0)  // Current count for the day
+  lastPostDate     String?     // YYYY-MM-DD to reset daily count
+
+  // Normal Auto Post settings (Auto Threads feature)
+  normalPostEnabled     Boolean     @default(false)
+  normalPostOrder       String      @default("SEQUENTIAL") // "SEQUENTIAL" or "RANDOM"
+  normalPostInterval    Int         @default(60) // Base interval in minutes
+  normalPostFluctuation Int         @default(15) // Fluctuation in minutes (+/-)
+  autoCleanupHours      Int         @default(0)  // 0 means disabled, X means delete tweets after X hours
+  normalPostStocks      NormalPostStock[]
+
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  targetAccounts   TargetAccount[]
+  postLogs         PostLog[]
+}
+
+model NormalPostStock {
+  id               String      @id @default(uuid())
+  xAccountId       String
+  xAccount         XAccount    @relation(fields: [xAccountId], references: [id], onDelete: Cascade)
+  content          String      // The normal tweet content
+  mediaUrls        String?     // Comma separated media URLs for the main tweet
+  replyContent     String?     // Thread reply content (Auto-reply to own tweet)
+  replyMediaUrls   String?     // Comma separated media URLs for the thread reply
+  isPosted         Boolean     @default(false)
+  createdAt        DateTime    @default(now())
+}
+
+model CommentStock {
+  id               String      @id @default(uuid())
+  xAccountId       String
+  xAccount         XAccount    @relation(fields: [xAccountId], references: [id], onDelete: Cascade)
+  content          String      // The custom text for QRT
+  isActive         Boolean     @default(true)
+  createdAt        DateTime    @default(now())
+}
+
+model TargetAccount {
+  id               String      @id @default(uuid())
+  xAccountId       String
+  xAccount         XAccount    @relation(fields: [xAccountId], references: [id], onDelete: Cascade)
+  handle           String      // Target user @username
+  minLikesFilter   Int         @default(0) // Engagement filter
+  isActive         Boolean     @default(true)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+}
+
+model PostLog {
+  id               String      @id @default(uuid())
+  xAccountId       String
+  xAccount         XAccount    @relation(fields: [xAccountId], references: [id], onDelete: Cascade)
+  postType         String      // "QUOTE_TWEET", "NORMAL_POST"
+  targetHandle     String?     // If quote tweet, who was it?
+  originalPostId   String?     // The tweet ID that was quoted
+  newPostId        String?     // The ID of the created post
+  status           String      // "SUCCESS", "FAILED"
+  replyPosted      Boolean     @default(false) // Has the auto-reply been posted?
+  createdAt        DateTime    @default(now())
+}
