@@ -167,14 +167,14 @@ body {
   margin-top: 24px;
   margin-bottom: 32px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
   justify-content: center;
   max-width: 800px;
   margin: 0 auto 32px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .dashboard-layout {
     flex-direction: column;
   }
@@ -200,9 +200,15 @@ body {
     width: 100%;
   }
   .proof-grid {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
   }
   .hero-title {
     font-size: clamp(1.8rem, 5vw, 2.5rem) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .proof-grid {
+    grid-template-columns: 1fr;
   }
 }
